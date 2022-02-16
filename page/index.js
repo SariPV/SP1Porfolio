@@ -82,61 +82,85 @@ for (let eli of tabLinks) {
 
 
 /*==================== SERVICES MODAL ====================*/
-var educationInput = document.getElementById('education-input');
-var add_more_fields = document.getElementById('add_more_fields');
-var remove_fields = document.getElementById('remove_fields');
+// var html = ''
+var x = 1;
+        var field = ' <div class="row"  id="row"><div class="col-12"><input type="text" name="institution" class="wrapper" required><label>Institution</label></div></div> <div class="row"> <div class="col-12"><input type="text" name="degree" id="degree" required><label>Degree</label></div></div><div class="row"><div class="col-md-6"><!-- <input type="date" name="start" id="startdate" name="startdate"> --><label >Start:</label><select class="form-select" name="startyear" id="year"><option value="">Select Year</option></select></div><div class="col-md-6"><!-- <input type="date" class="date" name="end" id="graddate" name="graddate"> <input type="text" class="date-picker form-control" name="datepicker"  id="datepicker" /> --><label >End:</label><select class="form-select" name="endyear" id="endyear"><option value="">Select Year</option></select></div></div></div>'
+        var add_more_fields = document.getElementById('add_more_fields');
+        var remove_fields = document.getElementById('remove_fields');
+        var educationInput = document.getElementById('education-input');
+        //   $('#add_more_fields').click(function() {
+//     var html = $('.row:first').parent().html();
+//     $(html).insertBefore(this);
+// });
 
+// $(document).on("click", ".deleteButton", function() {
+//     $(this).closest('.row').remove();
+// });
 add_more_fields.onclick = function(){
-	var newField = document.createElement('input');
-  var endDate = document.createElement('input');
-	/*newField.setAttribute('type','date');
-	newField.setAttribute('id','startdate');*/
-	newField.setAttribute('class','row');
-	newField.setAttribute('siz',50);
-	newField.setAttribute('placeholder','Another Field');
+  if(x < 10){
+        educationInput.append(field);
+        x++;
+    }else{
+        alert("max ten field allowed");
+    }
+};
+educationInput.on("click" ,".remove_button" , function(){
+    $(this).parent("div").remove();
+        x--;
+});
+// var educationInput = document.getElementById('form');
 
-  /*endDate.setAttribute('type','date');
-	endDate.setAttribute('id','enddate');
-	endDate.setAttribute('class','col-md-6');
-	endDate.setAttribute('siz',50);
-	endDate.setAttribute('placeholder','Another Field');*/
-	educationInput.appendChild(newField);
-  //educationInput.appendChild(endDate);
-}
+// var x=1
+// add_more_fields.onclick = function(){
 
-remove_fields.onclick = function(){
-	var input_tags = educationInput.getElementsByTagName('input');
-	if(input_tags.length > 2) {
-		educationInput.removeChild(input_tags[(input_tags.length) - 1]);
-	}
+//   //var html = $('.row:first').parent().html();
+// 	// var newField = document.createElement('input');
+//   // var endDate = document.createElement('input');
+// 	// /*newField.setAttribute('type','date');
+// 	// newField.setAttribute('id','startdate');*/
+// 	// newField.setAttribute('class','row');
+// 	// newField.setAttribute('siz',50);
+// 	// newField.setAttribute('placeholder','Another Field');
+
+//   // /*endDate.setAttribute('type','date');
+// 	// endDate.setAttribute('id','enddate');
+// 	// endDate.setAttribute('class','col-md-6');
+// 	// endDate.setAttribute('siz',50);
+// 	// endDate.setAttribute('placeholder','Another Field');*/
+// 	// educationInput.appendChild(newField);
+//   //educationInput.appendChild(endDate);
+// }
+
+// remove_fields.onclick = function(){
+// 	var input_tags = educationInput.getElementsByTagName('input');
+// 	if(input_tags.length > 2) {
+// 		educationInput.removeChild(input_tags[(input_tags.length) - 1]);
+// 	}
+// }
+// /*==================== PORTFOLIO SWIPER  ====================*/
+function triggerClick(e) {
+  document.querySelector('#profileImage').click();
 }
-/*==================== PORTFOLIO SWIPER  ====================*/
-var onDateSelect = function(selectedDate, input) {
-  if (input.id === 'Start') {
-   //getting start date
-    var start = $('#datepicker').datepicker("getDate");
-    console.log("start - "+start);
-    //setting it has mindate
-    $("#End").datepicker('option', 'minDate', start);
-  } else if(input.id === 'End'){ 
-   //getting end date
-    var end = $('#End').datepicker("getDate");
-    console.log("end - "+end);
-    //passing it max date in start
-    $("#Start").datepicker('option', 'maxDate', end);
+function displayImage(e) {
+  if (e.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e){
+      document.querySelector('#profileDisplay').setAttribute('src', e.target.result);
+    }
+    reader.readAsDataURL(e.files[0]);
   }
-};
-var onDocumentReady = function() {
-  var datepickerConfiguration = {
-    onSelect: onDateSelect,
-    dateFormat: "yyyy",
-  };
-  ///--- Component Binding ---///
-  $('#Start, #End').datepicker(datepickerConfiguration);
-  
-};
-$(onDocumentReady); 
+}
+
 /*==================== TESTIMONIAL ====================*/
+$('#datepicker').datetimepicker({
+  format      :   "YYYY",
+  viewMode    :   "years", 
+});
+//changeYear event trigger's
+// dp.on('changeYear', function (e) {    
+// //do something here
+// alert("Year changed ");
+// });
 
 
 /*==================== SCROLL SECTIONS ACTIVE LINK ====================*/

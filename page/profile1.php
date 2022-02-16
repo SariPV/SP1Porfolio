@@ -1,18 +1,12 @@
 
- <?php  
- //entry.php  
- session_start();  
- if(!isset($_SESSION["username"]))  
- {  
-      header("location:profile1.php?action=login");  
- }  
- ?>
 <?php
-require_once('config.php');
 
-    $id =1;
+
+require_once('config.php');
+session_start();
+    $id = get_current_user();
  
-    $sql = "SELECT * FROM user_account WHERE id = {$id}";
+    $sql = "SELECT email FROM user_account WHERE id = {$id}";
     $result = $link->query($sql);
  
     $data = $result->fetch_assoc();

@@ -1,4 +1,17 @@
-
+<?php
+require_once('config.php');
+if($_GET['id']) {
+    $id = $_GET['id'];
+ 
+    $sql = "SELECT * FROM user_acoount WHERE id = {$id}";
+    $result = $link->query($sql);
+ 
+    $data = $result->fetch_assoc();
+}
+ 
+    
+ 
+?>
 
 <!DOCTYPE html>
     <html lang="en">
@@ -69,6 +82,39 @@
             </nav>
             
             </header>
+            <?php
+
+            require_once("config.php");
+            $id = null;
+
+            if(isset($_GET["id"]))
+
+            {
+            $id = $_GET["id"];
+
+            }
+
+            $id =1;
+
+            $sql ="SELECT * FROM user_account where id = '".$id."' ";									
+            $result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
+            $data = mysqli_fetch_array ($result);
+
+
+            ?>
+            <?php
+            require_once("config.php");
+            if(isset($_GET["id"]))
+
+            {
+            $id = $_GET["id"];
+
+            }
+            $id =1;
+            $sql ="SELECT * FROM user_profile,education where user_profile.userid = $id AND user_profile.userid = $id   ";									
+            $result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
+            $data2 = mysqli_fetch_array ($result);
+            ?>
 
 
             <div class="profile">
@@ -85,9 +131,9 @@
                     <div class="tab-content" id="v-pills-tabContent">
                       <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">PERSONAL INFORMATION</h4>
-                        <form action="add.php" method="post" >
+                        <form action="add.php" method="post" enctype="multipart/form-data" >
                             <div class="profilepic" onclick="triggerClicl()">
-                                <img onclick="triggerClick()" id="profileDisplay" class="profilepic__image" src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-Clipart.png" width="250" height="250" alt="Profibild" />
+                                <img onclick="triggerClick()" id="profileDisplay" class="profilepic__image" src="images/<?php echo $data2['profileImage']?>" width="250" height="250" alt="Profibild" />
                                 <div class="profilepic__content">
                                   <span class="profilepic__icon"><i class="fas fa-camera"></i></span>
                                   <input type="file" id="profileImage" name="profileImage" onchange="displayImage(this)" class="profilepic__input"><span class="profilepic__text">Edit Profile</span>
@@ -98,33 +144,33 @@
                                    
                                 
                                 <div class="col-12">
-                                    <input type="text" name="fullname" id="fullname"required>
+                                    <input type="text" name="fullname" id="fullname" value="<?php echo $data2['full-name'] ?>"required>
                                     <label>Full Name</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="email" name="email" id="email">
+                                    <input type="email" name="email" id="email" value="<?php echo $data['email'] ?>">
                                     <label>Email</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="number" name="phone"required>
+                                    <input type="number" name="phone" value="<?php echo $data2['phone'] ?>"required>
                                     <label>Phone no</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="text" name="occupation"required>
+                                    <input type="text" name="occupation" value="<?php echo $data2['position'] ?>"required>
                                     <label>Occupation</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="text" name="website" required>
+                                    <input type="text" name="website" value="<?php echo $data2['website'] ?>"required>
                                     <label>website</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <input type="text" name="address"required>
+                                    <input type="text" name="address" value="<?php echo $data2['address'] ?>"required>
                                     <label>Address</label>
                                 </div>
                             </div>
@@ -136,15 +182,15 @@
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">EDUCATION</h4>
                         <form id="form"  action="education.php" method="post" class="form-group2">
                         <div class="education-input" id="education-input">
-                        <div class="row"  id="row">
+                        <div class="row" >
                             <div class="col-12">
-                                <input type="text" name="institution" class="wrapper" required>
+                                <input type="text" name="institution" class="wrapper" value="<?php echo $data2['institution'] ?>"required>
                                 <label>Institution</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" name="degree" id="degree" required>
+                                <input type="text" name="degree" id="degree"  value="<?php echo $data2['degree'] ?>"required>
                                 <label>Degree</label>
                             </div>
                         </div>   
@@ -153,7 +199,7 @@
                                 <!-- <input type="date" name="start" id="startdate" name="startdate"> -->
                                 <label >Start:</label>
                                 <select class="form-select" name="startyear" id="year">
-                                    <option value="">Select Year</option>
+                                    <option value="" ><?php echo $data2['yearStart'] ?></option>
                                 </select>
 
                             </div>
@@ -162,7 +208,7 @@
                                 <input type="text" class="date-picker form-control" name="datepicker"  id="datepicker" /> -->
                                 <label >End:</label>
                                 <select class="form-select" name="endyear" id="endyear">
-                                    <option value="">Select Year</option>
+                                    <option value="" ><?php echo $data2['yearEnd'] ?></option>
                                 </select>
 
                             </div>   
@@ -180,19 +226,33 @@
                         <input type="submit" id="save" name="save" value="save">
                     </form>
                 </div>
+                <?php
+            require_once("config.php");
+            if(isset($_GET["id"]))
+
+            {
+            $id = $_GET["id"];
+
+            }
+            $id =1;
+            $sql ="SELECT * FROM experience where userid = $id   ";									
+            $result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
+            $experience = mysqli_fetch_array ($result);
+            ?>
+
                       <div class="tab-pane fade" id="v-pills-experience" role="tabpanel" aria-labelledby="v-pills-experience-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">EXPERIENCE</h4>
                         <form action="experience.php" id="form2" method="post"  class="form-group2">
                         <div class="education-input" id="education-input">
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" name="company" class="wrapper" required>
+                                <input type="text" name="company" class="wrapper" value="<?php echo $experience['company'] ?>"required>
                                 <label>Company</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" id="description" name="description" required>
+                                <input type="text" id="description" name="description" value="<?php echo $experience['description'] ?>"required>
                                 <label>description</label>
                             </div>
                         </div>   
@@ -201,7 +261,7 @@
                                 <!-- <input type="date" id="startdate" name="startdate">  -->
                                 <label >Start:</label>
                                 <select class="form-select" name="startyear" id="Syear">
-                                    <option value="">Select Year</option>
+                                    <option value=""><?php echo $experience['yearStart'] ?></option>
                                 </select>
 
 
@@ -209,7 +269,7 @@
                             <div class="col-md-6">
                                 <label >End:</label>
                                 <select class="form-select" name="endyear" id="Eyear">
-                                    <option value="">Select Year</option>
+                                    <option value=""><?php echo $experience['yearEnd'] ?></option>
                                 </select>
 
                             </div>   
@@ -227,6 +287,20 @@
                         <input type="submit" value="save">
                     </form>
                       </div>
+                      <?php
+                        require_once("config.php");
+                        if(isset($_GET["id"]))
+
+                        {
+                        $id = $_GET["id"];
+
+                        }
+                        $id =1;
+                        $sql ="SELECT * FROM skill,achievement where skill.userid = $id  AND achievement.userid = $id  ";									
+                        $result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
+                        $skillAchieve = mysqli_fetch_array ($result);
+                        ?>
+
                       <div class="tab-pane fade" id="v-pills-achievement" role="tabpanel" aria-labelledby="v-pills-achievement-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">ACHIEVEMENT</h4>
                         <form action="achievement.php" id="form2"  method="post" class="form-group2">
@@ -234,7 +308,7 @@
                        
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" id="award" name="award" required>
+                                <input type="text" id="award" name="award" value="<?php echo $skillAchieve['description'] ?>" required>
                                 <label>award</label>
                             </div>
                         </div>   
@@ -243,7 +317,7 @@
                                 <!-- <input type="date"class="form-control" name="start"  id="yearpicker"> -->
                                 <!-- <label >Year</label> -->
                                 <select class="form-select" name="years" id="years">
-                                    <option value="">Select Year</option>
+                                    <option value=""><?php echo $skillAchieve['year'] ?></option>
                                 </select>
                             </div>
                             
@@ -261,6 +335,7 @@
                         <input type="submit" name="save" id="save" value="save">
                         </form>
                       </div>
+                     
                       <div class="tab-pane fade" id="v-pills-skill" role="tabpanel" aria-labelledby="v-pills-skill-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">SKILL</h4>
                         <form action="skill.php" id="form2" method="post"  class="form-group2">
@@ -268,7 +343,7 @@
                         
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" id="skill" name="skill" required>
+                                <input type="text" id="skill" name="skill" value="<?php echo $skillAchieve['skillname'] ?>" required>
                                 <label>Skill Name</label>
                             </div>
                         </div>   
@@ -290,6 +365,19 @@
                         </div>   
                         
                     </div>
+                    <?php
+                        require_once("config.php");
+                        if(isset($_GET["id"]))
+
+                        {
+                        $id = $_GET["id"];
+
+                        }
+                        $id =1;
+                        $sql ="SELECT * FROM reference where userid = $id";									
+                        $result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
+                        $ref = mysqli_fetch_array ($result);
+                        ?>
                     <div class="controls">
                         <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
                         <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
@@ -307,23 +395,23 @@
                                    
                                 
                                 <div class="col-12">
-                                    <input type="text" name="fullnam"required>
+                                    <input type="text" name="fullnam" value="<?php echo $ref['full-name'] ?>" required>
                                     <label>Full Name</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="email" name="emaiL" required>
+                                    <input type="email" name="emaiL" value="<?php echo $ref['email'] ?>"  required>
                                     <label>Email</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="number" name="phonE"required>
+                                    <input type="number" name="phonE" value="<?php echo $ref['phone'] ?>" required>
                                     <label>Phone no</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="text" name="occupatioN"required>
+                                    <input type="text" name="occupatioN" value="<?php echo $ref['position'] ?>" required>
                                     <label>Occupation</label>
                                 </div>
                                 </div>
@@ -432,18 +520,17 @@
         optn5.value = y;
 
         // if year is 2015 selected
-        if (y == 2022) {
-            optn.selected = true;
-            optn3.selected = true;
+        // if (y == 2022) {
+        //     optn.selected = true;
+        //     optn3.selected = true;
             
-        }
-        if (y==1980){
-            optn2.selected = true
-            optn4.selected = true;
-        }
+        // }
+        // if (y==1980){
+        //     optn2.selected = true
+        //     optn4.selected = true;
+        // }
 
         
-
         document.getElementById('endyear').options.add(optn);
         document.getElementById('year').options.add(optn2);
         document.getElementById('Syear').options.add(optn4);
@@ -452,30 +539,7 @@
 
         
         }
-        
        
-//         var x = 1;
-//         var field = ' <div class="row"  id="row"><div class="col-12"><input type="text" name="institution" class="wrapper" required><label>Institution</label></div></div> <div class="row"> <div class="col-12"><input type="text" name="degree" id="degree" required><label>Degree</label></div></div><div class="row"><div class="col-md-6"><!-- <input type="date" name="start" id="startdate" name="startdate"> --><label >Start:</label><select class="form-select" name="startyear" id="year"><option value="">Select Year</option></select></div><div class="col-md-6"><!-- <input type="date" class="date" name="end" id="graddate" name="graddate"> <input type="text" class="date-picker form-control" name="datepicker"  id="datepicker" /> --><label >End:</label><select class="form-select" name="endyear" id="endyear"><option value="">Select Year</option></select></div></div></div>'
-//      //   $('#add_more_fields').click(function() {
-// //     var html = $('.row:first').parent().html();
-// //     $(html).insertBefore(this);
-// // });
-
-// // $(document).on("click", ".deleteButton", function() {
-// //     $(this).closest('.row').remove();
-// // });
-// $("#add_more_fields").click(function(){
-//     if(x < 10){
-//         $("#education-input").append(field);
-//         x++;
-//     }else{
-//         alert("max ten field allowed");
-//     }
-// });
-// $("#education-input").on("click" ,".remove_button" , function(){
-//     $(this).parent("div").remove();
-//         x--;
-// });
         </script>
        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script> 

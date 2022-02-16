@@ -75,7 +75,7 @@ require("config.php");
 
 
 
-if(isset($_POST["login"]))  
+if($_SERVER["REQUEST_METHOD"] == "POST")  
  {  
       if(empty($_POST["email"]) && empty($_POST["password"]))  
       {  
@@ -83,14 +83,14 @@ if(isset($_POST["login"]))
       }  
       else  
       {  
-           $username = mysqli_real_escape_string($link, $_POST["username"]);  
+           $email = mysqli_real_escape_string($link, $_POST["email"]);  
            $password = mysqli_real_escape_string($link, $_POST["password"]);  
            $password = md5($password);  
            $query = "SELECT * FROM user_account WHERE email = '$email' AND password = '$password'";  
            $result = mysqli_query($link, $query);  
            if(mysqli_num_rows($result) > 0)  
            {  
-                $_SESSION['email'] = $email;  
+                $_SESSION['login_user'] = $email;  
                 header("location:index.html");  
            }  
            else  

@@ -9,9 +9,12 @@ if(mysqli_num_rows($sql)>0)
 }
 if (isset($_POST['submit']))
 {
-    $query="INSERT INTO user_account( email,password,role ) VALUES ('$email', 'md5($password)', 'US')";
-    $sql=mysqli_query($link,$query)or die("Could Not Perform the Query");
-    header ("Location: index.html");
+    $email = mysqli_real_escape_string($link, $_POST['email']);
+    $password = mysqli_real_escape_string($link, $_POST['password']);
+    $password = md5($password); //Password Encrypted
+    $query = "INSERT INTO user_account(email,password,role) values('$email', '$password', 'US')";
+    $result=mysqli_query($link,$query)or die("Could Not Perform the Query");
+    header ("Location: login.html");
 }
     
 else {
