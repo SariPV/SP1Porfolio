@@ -3,12 +3,12 @@
 require('config.php');
 include('profile.html');
 
-session_start();
+//session_start();
 
 
 //$id = get_current_user_id();
 // $_SESSION["login_user"] = $id;
-$id = $_GET['id'];
+//$id = $_GET['id'];
 
 if($_POST["save"])
   {
@@ -19,7 +19,7 @@ if($_POST["save"])
   $end=$_POST['endyear'];
 
   $query="INSERT INTO education(yearStart,yearEnd,institution,degree,userid)VALUES
-                                      ('$start','$end','$institution','$degree',$id) ";
+                                      ('$start','$end','$institution','$degree',1) ";
   $result=mysqli_query($link,$query)or die("Could Not Perform the Query".mysql_error($link));
   // if ($link->query($query) === true){
   //   echo 'added sucessfully';

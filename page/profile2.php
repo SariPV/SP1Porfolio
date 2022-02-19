@@ -1,13 +1,13 @@
 <?php
 require_once('config.php');
-if($_GET['id']) {
-    $id = $_GET['id'];
+// if($_GET['id']) {
+//     $id = $_GET['id'];
  
-    $sql = "SELECT * FROM user_acoount WHERE id = {$id}";
-    $result = $link->query($sql);
+//     $sql = "SELECT * FROM user_acoount WHERE id = {$id}";
+//     $result = $link->query($sql);
  
-    $data = $result->fetch_assoc();
-}
+//     $data = $result->fetch_assoc();
+// }
  
     
  
@@ -114,6 +114,9 @@ if($_GET['id']) {
             $sql ="SELECT * FROM user_profile,education where user_profile.userid = $id AND user_profile.userid = $id   ";									
             $result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
             $data2 = mysqli_fetch_array ($result);
+            if (empty($data2)){
+                header("location:profile1.php");  
+            }
             ?>
 
 
@@ -133,7 +136,7 @@ if($_GET['id']) {
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">PERSONAL INFORMATION</h4>
                         <form action="add.php" method="post" enctype="multipart/form-data" >
                             <div class="profilepic" onclick="triggerClicl()">
-                                <img onclick="triggerClick()" id="profileDisplay" class="profilepic__image" src="images/<?php echo $data2['profileImage']?>" width="250" height="250" alt="Profibild" />
+                                <img onclick="triggerClick()" id="profileDisplay" class="profilepic__image" src="<?php echo $data2['profileImage']?>" width="250" height="250" alt="Profibild" />
                                 <div class="profilepic__content">
                                   <span class="profilepic__icon"><i class="fas fa-camera"></i></span>
                                   <input type="file" id="profileImage" name="profileImage" onchange="displayImage(this)" class="profilepic__input"><span class="profilepic__text">Edit Profile</span>
@@ -144,7 +147,7 @@ if($_GET['id']) {
                                    
                                 
                                 <div class="col-12">
-                                    <input type="text" name="fullname" id="fullname" value="<?php echo $data2['full-name'] ?>"required>
+                                    <input type="text" name="fullname" id="fullname" value="<?php echo $data2['full-name']  ?>"required>
                                     <label>Full Name</label>
                                 </div>
                             </div>
@@ -219,7 +222,7 @@ if($_GET['id']) {
                         
                     </div>
                     <div class="controls">
-                        <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                        <a href="#"  id="add_more_fields" onClick="add_field" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
                         <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
                       </div>
                    
@@ -284,7 +287,7 @@ if($_GET['id']) {
                             <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
                           </div>
                        
-                        <input type="submit" value="save">
+                        <input type="submit" name="save" value="save">
                     </form>
                       </div>
                       <?php

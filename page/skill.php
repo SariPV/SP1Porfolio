@@ -3,11 +3,11 @@
 require('config.php');
 include('profile.html');
 
-session_start();
+// session_start();
 
 
-//$id = get_current_user_id();
-$_SESSION["login_user"] = $id;
+// //$id = get_current_user_id();
+// $_SESSION["login_user"] = $id;
 
 if($_POST["save"])
   {

@@ -759,6 +759,7 @@ i{
 .profilepic__icon {
   color: white;
   padding-bottom: 8px;
+
 }
 
 .fas {
@@ -1171,7 +1172,67 @@ height: 100%;
 .footer__copy {
   font-size: var(--smaller-font-size);
 }
+/*========== ADMIN ==========*/
 
+
+/*========== Template Form ==========*/
+
+.templatepic {
+  position: relative;
+  width: 125px;
+  height: 125px;
+  
+  overflow: hidden;
+  background-color: transparent;
+}
+.templatepic:hover .templatepic__content {
+  opacity: 1;
+}
+
+.templatepic:hover .templatepic__image {
+  opacity: .5;
+  background-color: #383d41;
+}
+
+.templatepic__image {
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity .2s ease-in-out;
+}
+
+.templatepic__content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+}
+
+.templatepic__icon {
+  color: white;
+  padding-bottom: 8px;
+
+}
+
+.fas {
+  font-size: 20px;
+}
+.template__input{
+  display: none;
+}
+.templatepic__text {
+  text-transform: uppercase;
+  font-size: 12px;
+  width: 50%;
+  text-align: center;
+}
 
 /*========== SCROLL UP ==========*/
 
@@ -1215,6 +1276,7 @@ height: 100%;
   
   
   }
+  
  
 }
 @media screen and (max-width: 589px){

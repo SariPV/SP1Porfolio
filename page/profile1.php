@@ -3,13 +3,13 @@
 
 
 require_once('config.php');
-session_start();
-    $id = get_current_user();
+// session_start();
+//     $id = get_current_user();
  
-    $sql = "SELECT email FROM user_account WHERE id = {$id}";
-    $result = $link->query($sql);
+//     $sql = "SELECT email FROM user_account WHERE id = {$id}";
+//     $result = $link->query($sql);
  
-    $data = $result->fetch_assoc();
+//     $data = $result->fetch_assoc();
 
  
    
@@ -85,31 +85,33 @@ session_start();
                     </div>
                     <?php
 
-                    require_once("config.php");
-                    $email = null;
+require_once("config.php");
+$id = null;
 
-                    if(isset($_GET["email"]))
+if(isset($_GET["id"]))
 
-                    {
-                    $email = $_GET["email"];
+{
+$id = $_GET["id"];
 
-                    }
+}
 
-                    $email =$_REQUEST['email'];
+$id =1;
 
-                    $sql ="SELECT * FROM user_account where email = '".$email."' ";									
-                    $result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
-                    $data = mysqli_fetch_array ($result);
-                    ?>
-                    <div class="tab-content" id="v-pills-tabContent">
+$sql ="SELECT * FROM user_account where id = '".$id."' ";									
+$result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
+$data = mysqli_fetch_array ($result);
+
+
+?>
+                <div class="tab-content" id="v-pills-tabContent">
                       <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">PERSONAL INFORMATION</h4>
-                        <form action="insert.php" method="post">
-                            <div class="profilepic">
-                                <img class="profilepic__image" src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-Clipart.png" width="250" height="250" alt="Profibild" />
+                        <form action="add.php" method="post" >
+                            <div class="profilepic" onclick="triggerClicl()">
+                                <img onclick="triggerClick()" id="profileDisplay" class="profilepic__image" src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-Clipart.png" width="250" height="250" alt="Profibild" />
                                 <div class="profilepic__content">
                                   <span class="profilepic__icon"><i class="fas fa-camera"></i></span>
-                                  <input type="file" id="image" class="profilepic__input"><span class="profilepic__text">Edit Profile</span>
+                                  <input type="file" id="profileImage" name="profileImage" onchange="displayImage(this)" class="profilepic__input"><span class="profilepic__text">Edit Profile</span>
                                 </div>
                               </div>
                             <div class="row">
@@ -117,13 +119,13 @@ session_start();
                                    
                                 
                                 <div class="col-12">
-                                    <input type="text" name="fullname"required>
+                                    <input type="text" name="fullname" id="fullname"required>
                                     <label>Full Name</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="email" name="email"  value="<?php echo $data['email'] ?>" required>
+                                    <input type="email" name="email" id="email"  value="<?php echo $data['email'] ?>">
                                     <label>Email</label>
                                 </div>
                                 <div class="col-md-6">
@@ -147,34 +149,42 @@ session_start();
                                     <label>Address</label>
                                 </div>
                             </div>
-                            <input type="submit" name ="save" value="save">
+                            <input type="submit" name ="save" id="save" value="save">
                         </form>
                       </div>
-                    <!--Education Tabs-->
-                     <div class="tab-pane fade show" id="v-pills-education" role="tabpanel" aria-labelledby="v-pills-education-tab">
+                      <div class="tab-pane fade show" id="v-pills-education" role="tabpanel" aria-labelledby="v-pills-education-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">EDUCATION</h4>
-                        <form action="Post" id="form2"  action="add.php" class="form-group2">
+                        <form id="form"  action="education.php" method="post" class="form-group2">
                         <div class="education-input" id="education-input">
-                        <div class="row" >
+                        <div class="row"  id="row">
                             <div class="col-12">
-                                <input type="text" name="wrapper" class="wrapper" required>
+                                <input type="text" name="institution" class="wrapper" required>
                                 <label>Institution</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" id="degree" required>
+                                <input type="text" name="degree" id="degree" required>
                                 <label>Degree</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="date" id="startdate" name="startdate">
+                                <!-- <input type="date" name="start" id="startdate" name="startdate"> -->
                                 <label >Start:</label>
+                                <select class="form-select" name="startyear" id="year">
+                                    <option value="">Select Year</option>
+                                </select>
+
                             </div>
                             <div class="col-md-6">
-                                <input type="date" id="graddate" name="graddate">
+                                <!-- <input type="date" class="date" name="end" id="graddate" name="graddate"> 
+                                <input type="text" class="date-picker form-control" name="datepicker"  id="datepicker" /> -->
                                 <label >End:</label>
+                                <select class="form-select" name="endyear" id="endyear">
+                                    <option value="">Select Year</option>
+                                </select>
+
                             </div>   
                             
                             
@@ -182,38 +192,46 @@ session_start();
                         </div>
                         
                     </div>
-                        <div class="controls">
-                            <a href="#" id="add_more_fields"><i class="fa fa-plus"></i>Add More</a>
-                            <a href="#" id="remove_fields"><i class="fa fa-plus"></i>Remove Field</a>
-                          </div>
-                       
-                        <input type="submit" value="save">
+                    <div class="controls">
+                        <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                        <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
+                      </div>
+                   
+                        <input type="submit" id="save" name="save" value="save">
                     </form>
                 </div>
                       <div class="tab-pane fade" id="v-pills-experience" role="tabpanel" aria-labelledby="v-pills-experience-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">EXPERIENCE</h4>
-                        <form action="#" id="form2"   class="form-group2">
+                        <form action="experience.php" id="form2" method="post"  class="form-group2">
                         <div class="education-input" id="education-input">
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" name="wrapper" class="wrapper" required>
+                                <input type="text" name="company" class="wrapper" required>
                                 <label>Company</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" id="degree" required>
+                                <input type="text" id="description" name="description" required>
                                 <label>description</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="date" id="startdate" name="startdate">
+                                <!-- <input type="date" id="startdate" name="startdate">  -->
                                 <label >Start:</label>
+                                <select class="form-select" name="startyear" id="Syear">
+                                    <option value="">Select Year</option>
+                                </select>
+
+
                             </div>
                             <div class="col-md-6">
-                                <input type="date" id="graddate" name="graddate">
                                 <label >End:</label>
+                                <select class="form-select" name="endyear" id="Eyear">
+                                    <option value="">Select Year</option>
+                                </select>
+
                             </div>   
                             
                             
@@ -222,28 +240,31 @@ session_start();
                         
                     </div>
                         <div class="controls">
-                            <a href="#" id="add_more_fields"><i class="fa fa-plus"></i>Add More</a>
-                            <a href="#" id="remove_fields"><i class="fa fa-plus"></i>Remove Field</a>
+                            <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                            <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
                           </div>
                        
-                        <input type="submit" value="save">
+                        <input type="submit" name = "save" value="save">
                     </form>
                       </div>
                       <div class="tab-pane fade" id="v-pills-achievement" role="tabpanel" aria-labelledby="v-pills-achievement-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">ACHIEVEMENT</h4>
-                        <form action="#" id="form2"   class="form-group2">
+                        <form action="achievement.php" id="form2"  method="post" class="form-group2">
                         <div class="education-input" id="education-input">
                        
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" id="degree" required>
+                                <input type="text" id="award" name="award" required>
                                 <label>award</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="text"class="form-control" name="datepicker" id="datepicker">
-                                <label >Start:</label>
+                                <!-- <input type="date"class="form-control" name="start"  id="yearpicker"> -->
+                                <!-- <label >Year</label> -->
+                                <select class="form-select" name="years" id="years">
+                                    <option value="">Select Year</option>
+                                </select>
                             </div>
                             
                             
@@ -252,34 +273,34 @@ session_start();
                         </div>   
                         
                     </div>
-                        <div class="controls">
-                            <a href="#" id="add_more_fields"><i class="fa fa-plus"></i>Add More</a>
-                            <a href="#" id="remove_fields"><i class="fa fa-plus"></i>Remove Field</a>
-                          </div>
-                       
-                        <input type="submit" value="save">
+                    <div class="controls">
+                        <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                        <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
+                      </div>
+                   
+                        <input type="submit" name="save" id="save" value="save">
                         </form>
                       </div>
                       <div class="tab-pane fade" id="v-pills-skill" role="tabpanel" aria-labelledby="v-pills-skill-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">SKILL</h4>
-                        <form action="#" id="form2"   class="form-group2">
+                        <form action="skill.php" id="form2" method="post"  class="form-group2">
                         <div class="skill-input" id="skill-input">
                         
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" id="degree" required>
+                                <input type="text" id="skill" name="skill" required>
                                 <label>Skill Name</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-md-6">
-                                <select class="form-select" aria-label="Disabled select example" enabled>
+                                <select class="form-select" id="level" name="level" >
                                     <option selected>Skill Level</option>
-                                    <option value="1">Beginner</option>
-                                    <option value="2">Average</option>
-                                    <option value="3">Skilled</option>
-                                    <option value="3">Specialist</option>
-                                    <option value="3">Expert</option>
+                                    <option value="20">Beginner</option>
+                                    <option value="40">Average</option>
+                                    <option value="60">Skilled</option>
+                                    <option value="80">Specialist</option>
+                                    <option value="100">Expert</option>
                                   </select>
                             </div>
                             
@@ -289,48 +310,48 @@ session_start();
                         </div>   
                         
                     </div>
-                        <div class="controls">
-                            <a href="#" id="add_more_fields"><i class="fa fa-plus"></i>Add More</a>
-                            <a href="#" id="remove_fields"><i class="fa fa-plus"></i>Remove Field</a>
-                          </div>
-                       
-                        <input type="submit" value="save">
+                    <div class="controls">
+                        <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                        <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
+                      </div>
+                   
+                        <input type="submit" name="save" value="save">
                         </form>
                       </div>
                       <div class="tab-pane fade" id="v-pills-reference" role="tabpanel" aria-labelledby="v-pills-reference-tab">
-                        <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">PERSONAL INFORMATION</h4>
-                        <form action="insert.php" method="post">
+                        <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">REFERENCES</h4>
+                        <form action="reference.php" method="post">
                             <div class="referrence-input" id="referrence-input">
                             <div class="row">
                                 
                                    
                                 
                                 <div class="col-12">
-                                    <input type="text" name="full-name"required>
+                                    <input type="text" name="fullnam"required>
                                     <label>Full Name</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="email" name="email" required>
+                                    <input type="email" name="emaiL" required>
                                     <label>Email</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="number" name="phone"required>
+                                    <input type="number" name="phonE"required>
                                     <label>Phone no</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="text" name="occupation"required>
+                                    <input type="text" name="occupatioN"required>
                                     <label>Occupation</label>
                                 </div>
                                 </div>
                                 <div class="controls">
-                                    <a href="#" id="add_more_fields"><i class="fa fa-plus"></i>Add More</a>
-                                    <a href="#" id="remove_fields"><i class="fa fa-plus"></i>Remove Field</a>
+                                    <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                                    <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
                                   </div>
-                            <input type="submit" name ="save" value="save">
+                                    <input type="submit" name ="save" value="save">
                         </form>
                       </div>
                       </div>
@@ -411,12 +432,72 @@ session_start();
 
         <!--==================== MAIN JS ====================-->
         <script src="index.js"></script>
+        <script>
+            
+                for(y = 1980; y <= 2022; y++) {
+        var optn = document.createElement("option");
+        var optn2 = document.createElement("option");
+        var optn3 = document.createElement("option");
+        var optn4 = document.createElement("option");
+        var optn5 = document.createElement("option");
+        optn.text = y;
+        optn.value = y;
+        optn2.text = y;
+        optn2.value = y;
+        optn3.text = y;
+        optn3.value = y;
+        optn4.text = y;
+        optn4.value = y;
+        optn5.text = y;
+        optn5.value = y;
+
+        // if year is 2015 selected
+        if (y == 2022) {
+            optn.selected = true;
+            optn3.selected = true;
+            
+        }
+        if (y==1980){
+            optn2.selected = true
+            optn4.selected = true;
+        }
+
+        
+
+        document.getElementById('endyear').options.add(optn);
+        document.getElementById('year').options.add(optn2);
+        document.getElementById('Syear').options.add(optn4);
+        document.getElementById('Eyear').options.add(optn3);
+        document.getElementById('years').options.add(optn5);
+
+        
+        }
+        
+       
+//         var x = 1;
+//         var field = ' <div class="row"  id="row"><div class="col-12"><input type="text" name="institution" class="wrapper" required><label>Institution</label></div></div> <div class="row"> <div class="col-12"><input type="text" name="degree" id="degree" required><label>Degree</label></div></div><div class="row"><div class="col-md-6"><!-- <input type="date" name="start" id="startdate" name="startdate"> --><label >Start:</label><select class="form-select" name="startyear" id="year"><option value="">Select Year</option></select></div><div class="col-md-6"><!-- <input type="date" class="date" name="end" id="graddate" name="graddate"> <input type="text" class="date-picker form-control" name="datepicker"  id="datepicker" /> --><label >End:</label><select class="form-select" name="endyear" id="endyear"><option value="">Select Year</option></select></div></div></div>'
+//      //   $('#add_more_fields').click(function() {
+// //     var html = $('.row:first').parent().html();
+// //     $(html).insertBefore(this);
+// // });
+
+// // $(document).on("click", ".deleteButton", function() {
+// //     $(this).closest('.row').remove();
+// // });
+// $("#add_more_fields").click(function(){
+//     if(x < 10){
+//         $("#education-input").append(field);
+//         x++;
+//     }else{
+//         alert("max ten field allowed");
+//     }
+// });
+// $("#education-input").on("click" ,".remove_button" , function(){
+//     $(this).parent("div").remove();
+//         x--;
+// });
+        </script>
        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script> 
        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         </html>
-
-
-
-    
-        
