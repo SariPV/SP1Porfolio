@@ -1,4 +1,33 @@
+<?php
+	session_start();
+	require_once("config.php");
 
+	if(!isset($_SESSION['userLogin']))
+	{
+		echo "Please Login!";
+		exit();
+	}else{
+    //  $query = "SELECT 'role' from user_account where id ='".$_SESSION['userLogin']."'";
+    //  $result = mysqli_query($link, $query);  
+    if ($_SESSION['status'] == 'US'){
+      $id = $_SESSION['id'];
+     // "SELECT id from user_account where email ='".$_SESSION['id']."'";
+      // header("location:index.php");
+    }else{
+      header("location:index2.php");  
+    }
+    
+  }
+	
+	//*** Update Last Stay in Login System
+	// $sql = "UPDATE member SET LastUpdate = NOW() WHERE UserID = '".$_SESSION["UserID"]."' ";
+	// $query = mysqli_query($con,$sql);
+
+	// //*** Get User Login
+	// $strSQL = "SELECT * FROM member WHERE UserID = '".$_SESSION['UserID']."' ";
+	// $objQuery = mysqli_query($con,$strSQL);
+	// $objResult = mysqli_fetch_array($objQuery,MYSQLI_ASSOC);
+?>
       <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -6,61 +35,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv = "X-UA-Compatible" content="ie=edge">
         <!--==================== FONTAWESOMEICONS ====================-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
         <script src="https://kit.fontawesome.com/070d25e7f6.js" crossorigin="anonymous"></script>
-                
+        
         <!--==================== SWIPER CSS ====================-->
         <link rel="stylesheet" href="">
         
         <!--==================== CSS ====================-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <!-- Moment Js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-
-<link rel="stylesheet" href="index.css">
-
+        <link rel="stylesheet" href="index.css">
+        
         <title>Responsive Portfolio Website</title>
     </head>
     <body>  
     <!--==================== HEADER ====================-->
     <header class="header" id="header">
-      <nav class="nav-app" id="nav">
-          <a href="#" class="nav-logo">MyPortfolio</a>
-              <ul class="nav-menu">
-                  <li class="nav-item">
-                      <a href="#" class="nav-link">Home</a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="template.html" class="nav-link">Template</a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="index.html#about" class="nav-link">About</a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="signUp.html"  name= "signOut" class="button">Sign Up</a>
-                  </li>
-                  
+            <nav class="nav-app" id="nav">
+                <a href="#" class="nav-logo">MyPortfolio</a>
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="profile3.php" class="nav-link">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="template.php" class="nav-link">Template</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php#about" class="nav-link">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="logout.php"  name= "signOut" class="button">Log out</a>
+                        </li>
+                        
 
-              </ul>
-              <div class="toggle">
-                  <span class="bar"></span>
-                  <span class="bar"></span>
-                  <span class="bar"></span>
-              </div>
-              
-      
-           <!--   <div class="nav_toggle" id="nav-toggle">
-                  <i class="fas fa-bars"></i>
-              </div>-->
-          
-      
-      </nav>
-      
-      </header>
+                    </ul>
+                    <div class="toggle">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                    
+            
+                 <!--   <div class="nav_toggle" id="nav-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>-->
+                
+            
+            </nav>
+            
+            </header>
         <!--==================== MAIN ====================-->
         <main class="main">
             <!--==================== HOME ====================-->
@@ -70,7 +94,7 @@
                         <div class="home_data">
                             <h1 class="home_title">Online Portfolio Builder</h1>
                             <h2 class="home_subtitle">Our resumes get people hired at top companies.</h2>
-                            <a href="signUp.html" class="button">Sign Up</a>
+                            <a href="profile3.php" class="button">Start now</a>
                         </div>
         
                         <img src="images/character.svg" alt="img" class="home_img">
@@ -132,7 +156,7 @@
             <section class="templates section" id="templates">
                 <div class="tabs-container grid">
                   <h3 style="text-align: center; padding-left: 20%;">E-Portfolio Builder To Fit people in All ages</h3>
-                  <a href="template.html"><button style="background-color: #2CE080; border-radius: 4px; border: none;padding: 12px 2px;
+                  <a href="template.php"><button style="background-color: #2CE080; border-radius: 4px; border: none;padding: 12px 2px;
                   text-align: center;
                   width: 20%;
                   font-weight: 500;
@@ -162,10 +186,17 @@
         
             </section>
 
+           
         </main>
 
+        <!--==================== FOOTER ====================-->
+       
+        
+        <!--==================== SCROLL TOP ====================-->
         
 
+        <!--==================== SWIPER JS ====================-->
+        <script src=""></script>
 
         <!--==================== MAIN JS ====================-->
         <script src="index.js"></script>

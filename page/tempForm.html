@@ -27,7 +27,7 @@
              <br>
              
              <h1 style="color: #2CE080;">Create New Template</h1>
-             <form accept-charset="UTF-8" action="" method="POST" enctype="multipart/form-data" target="_blank">
+             <form accept-charset="UTF-8" action="addTemplate.php" method="POST" enctype="multipart/form-data" target="_blank">
              
                <div class="form-group">
                 <label for="exampleInputEmail1" required="required">Insert Template Image</label>
@@ -35,7 +35,7 @@
                 <img onclick="triggerClick()" id="profileDisplay" class="templatepic__image" src="" width="250" height="250" alt="" />
                 <div class="templatepic__content">
                   <span class="templatepic__icon"><i class="fas fa-camera"></i></span>
-                  <input type="file" id="profileImage" name="templateImage" onchange="displayImage(this)" class="profilepic__input"><span class="profilepic__text">Edit Profile</span>
+                  <input type="file" id="profileImage" name="templateImage" onchange="displayImage(this)" class="profilepic__input"><span class="profilepic__text">Edit Template</span>
                 </div>
               </div>  
                </div>
@@ -53,11 +53,11 @@
                <hr>
                <div class="form-group mt-3">
                  <label class="mr-2">Upload your Templates:</label>
-                 <input type="file" name="file">
+                 <input type="file" name="tempfile">
                </div>
                <hr>
                <a href="admin.html" class="btn btn-primary" style="background-color: #616161af;border: none;">Cancel</a>
-               <button type="submit" class="btn btn-primary" style="background-color: #2CE080;border: none;">Submit</button>
+               <input type="submit" name="save" class="btn btn-primary" style="background-color: #2CE080;border: none;">Submit</input>
               
              </form>
          </div> 

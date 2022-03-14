@@ -1,7 +1,9 @@
 <?php
 
-require('config.php');
-include('profile.html');
+session_start();
+require("config.php");
+$uid=$_SESSION["id"];
+//include('profile.html');
 
 //session_start();
 
@@ -12,15 +14,45 @@ include('profile.html');
 
 if($_POST["save"])
   {
-      
-  $institution=$_POST['institution'];
-  $degree=$_POST['degree'];
-  $start=$_POST['startyear'];
-  $end=$_POST['endyear'];
+  $itemCount = count($_POST["institution"]);
+  if($itemCount > 0)  
+ {  
+  for($i=0; $i<$itemCount; $i++)  
+  {  
+       if(trim($_POST["institution"][$i] != ''))  
+       {  
+         $start = $_POST["startyear"][$i] ;
+         $end = $_POST["endyear"][$i] ;
+         $institution = $_POST["institution"][$i] ;
+         $degree = $_POST["degree"][$i];
+         if ($start < $end){
+          $query="INSERT INTO education(yearStart,yearEnd,institution,degree,userid)VALUES
+          ('$start','$end','$institution','$degree','$uid') ";
+          $result=mysqli_query($link,$query)or die("Could Not Perform the Query".mysql_error($link));
+          header ("Location: profile3.php");
+         }else{
+          echo "<script type='text/javascript'>alert('Please Enter Start year less than end year');</script>"; 
+         }
+        // $query="INSERT INTO education(yearStart,yearEnd,institution,degree,userid)VALUES
+        // (,'$uid') ";
+        // $result=mysqli_query($link,$query)or die("Could Not Perform the Query".mysql_error($link));
 
-  $query="INSERT INTO education(yearStart,yearEnd,institution,degree,userid)VALUES
-                                      ('$start','$end','$institution','$degree',1) ";
-  $result=mysqli_query($link,$query)or die("Could Not Perform the Query".mysql_error($link));
+      }  
+  }  
+  
+}  
+else  
+{  
+  echo "Please Enter Education";  
+}  
+  // $institution=$_POST['institution'];
+  // $degree=$_POST['degree'];
+  // $start=$_POST['startyear'];
+  // $end=$_POST['endyear'];
+
+  // $query="INSERT INTO education(yearStart,yearEnd,institution,degree,userid)VALUES
+  //                                     ('$start','$end','$institution','$degree','".$_SESSION['userLogin']."') ";
+  // $result=mysqli_query($link,$query)or die("Could Not Perform the Query".mysql_error($link));
   // if ($link->query($query) === true){
   //   echo 'added sucessfully';
   // }else{

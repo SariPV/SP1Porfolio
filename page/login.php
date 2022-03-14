@@ -90,8 +90,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
            $result = mysqli_query($link, $query);  
            if(mysqli_num_rows($result) > 0)  
            {  
-                $_SESSION['login_user'] = $email;  
-                header("location:index.html");  
+                
+               while($row = mysqli_fetch_array($result)){
+                $_SESSION['status'] = $row['role'];
+               //  $id = $query['id'];
+                $_SESSION['id'] = $row['id'];  
+                $_SESSION['userLogin'] =true;  
+                //session_write_close();
+                header("location:index.php");  
+               // if($query["role"] == "AM")
+			// {
+			// 	header("location:admin.html");
+			// }
+			// else
+			// {
+			// 	header("location:index.html");
+			// }
+               }
            }  
            else  
            {  

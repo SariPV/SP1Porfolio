@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('config.php');
 // if($_GET['id']) {
 //     $id = $_GET['id'];
@@ -8,7 +9,14 @@ require_once('config.php');
  
 //     $data = $result->fetch_assoc();
 // }
- 
+
+
+if(!isset($_SESSION['userLogin']))
+{
+    echo "Please Login!";
+    exit();
+}
+
     
  
 ?>
@@ -84,8 +92,8 @@ require_once('config.php');
             </header>
             <?php
 
-            require_once("config.php");
-            $id = null;
+           require_once("config.php");
+           // $id = null;
 
             if(isset($_GET["id"]))
 
@@ -94,9 +102,10 @@ require_once('config.php');
 
             }
 
-            $id =1;
-
-            $sql ="SELECT * FROM user_account where id = '".$id."' ";									
+           // $id =$_SESSION['userLogin'];
+             $id =1;
+        //    $sql ="SELECT * FROM user_account where id = '".$_SESSION['userLogin']."' ";		
+            $sql ="SELECT * FROM user_account where id = $id ";								
             $result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
             $data = mysqli_fetch_array ($result);
 
@@ -110,8 +119,9 @@ require_once('config.php');
             $id = $_GET["id"];
 
             }
-            $id =1;
-            $sql ="SELECT * FROM user_profile,education where user_profile.userid = $id AND user_profile.userid = $id   ";									
+           // $id =$_SESSION['userLogin'];
+           $id =1;
+            $sql ="SELECT * FROM user_profile,education where user_profile.userid = $id AND education.userid = $id   ";									
             $result = mysqli_query($link,$sql) or die ("Error in query: $sql " . mysqli_error());
             $data2 = mysqli_fetch_array ($result);
             if (empty($data2)){
@@ -184,16 +194,22 @@ require_once('config.php');
                      <div class="tab-pane fade show" id="v-pills-education" role="tabpanel" aria-labelledby="v-pills-education-tab">
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">EDUCATION</h4>
                         <form id="form"  action="education.php" method="post" class="form-group2">
+                            <?php 
+                            while ( $data2 = mysqli_fetch_array ($result)) {
+?>
+                            
+
                         <div class="education-input" id="education-input">
+                            <div class="ed-input" id="ed-input" style="padding-top:20px;">
                         <div class="row" >
                             <div class="col-12">
-                                <input type="text" name="institution" class="wrapper" value="<?php echo $data2['institution'] ?>"required>
+                                <input type="text" id="institution" name="institution[]" class="wrapper" value="<?php echo $data2['institution'] ?>"required>
                                 <label>Institution</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" name="degree" id="degree"  value="<?php echo $data2['degree'] ?>"required>
+                                <input type="text" name="degree[]" id="degree"  value="<?php echo $data2['degree'] ?>"required>
                                 <label>Degree</label>
                             </div>
                         </div>   
@@ -201,7 +217,7 @@ require_once('config.php');
                             <div class="col-md-6">
                                 <!-- <input type="date" name="start" id="startdate" name="startdate"> -->
                                 <label >Start:</label>
-                                <select class="form-select" name="startyear" id="year">
+                                <select class="form-select" name="startyear[]" id="year">
                                     <option value="" ><?php echo $data2['yearStart'] ?></option>
                                 </select>
 
@@ -210,23 +226,27 @@ require_once('config.php');
                                 <!-- <input type="date" class="date" name="end" id="graddate" name="graddate"> 
                                 <input type="text" class="date-picker form-control" name="datepicker"  id="datepicker" /> -->
                                 <label >End:</label>
-                                <select class="form-select" name="endyear" id="endyear">
+                                <select class="form-select" name="endyear[]" id="endyear">
                                     <option value="" ><?php echo $data2['yearEnd'] ?></option>
                                 </select>
 
-                            </div>   
+                            </div> 
+                            </div>  
                             
                             
                             
                         </div>
                         
                     </div>
-                    <div class="controls">
-                        <a href="#"  id="add_more_fields" onClick="add_field" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
-                        <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
+                    <div class="controls" id='controls'>
+                        <a href="#" class="add-more"  id="add_more_fields"  style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                        <!-- <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a> -->
                       </div>
                    
                         <input type="submit" id="save" name="save" value="save">
+<?php
+                            }
+                        ?>
                     </form>
                 </div>
                 <?php
@@ -247,15 +267,16 @@ require_once('config.php');
                         <h4  style="color:#3cca7e; font-weight: 900; text-align: center;">EXPERIENCE</h4>
                         <form action="experience.php" id="form2" method="post"  class="form-group2">
                         <div class="education-input" id="education-input">
+                            <div class="ed-input">
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" name="company" class="wrapper" value="<?php echo $experience['company'] ?>"required>
+                                <input type="text" name="company[]" class="wrapper" value="<?php echo $experience['company'] ?>"required>
                                 <label>Company</label>
                             </div>
                         </div>   
                         <div class="row">
                             <div class="col-12">
-                                <input type="text" id="description" name="description" value="<?php echo $experience['description'] ?>"required>
+                                <input type="text" id="description" name="description[]" value="<?php echo $experience['description'] ?>"required>
                                 <label>description</label>
                             </div>
                         </div>   
@@ -263,7 +284,7 @@ require_once('config.php');
                             <div class="col-md-6">
                                 <!-- <input type="date" id="startdate" name="startdate">  -->
                                 <label >Start:</label>
-                                <select class="form-select" name="startyear" id="Syear">
+                                <select class="form-select" name="startyear[]" id="Syear">
                                     <option value=""><?php echo $experience['yearStart'] ?></option>
                                 </select>
 
@@ -271,19 +292,19 @@ require_once('config.php');
                             </div>
                             <div class="col-md-6">
                                 <label >End:</label>
-                                <select class="form-select" name="endyear" id="Eyear">
+                                <select class="form-select" name="endyear[]" id="Eyear">
                                     <option value=""><?php echo $experience['yearEnd'] ?></option>
                                 </select>
 
                             </div>   
                             
-                            
+                        </div>
                             
                         </div>   
                         
                     </div>
                         <div class="controls">
-                            <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                            <!-- <a href="#" class="add-more" id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a> -->
                             <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
                           </div>
                        
@@ -331,7 +352,7 @@ require_once('config.php');
                         
                     </div>
                     <div class="controls">
-                        <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                        <!-- <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a> -->
                         <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
                       </div>
                    
@@ -418,8 +439,8 @@ require_once('config.php');
                                     <label>Occupation</label>
                                 </div>
                                 </div>
-                                <div class="controls">
-                                    <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a>
+                                <div class="controls" id='controls'>
+                                    <!-- <a href="#"  id="add_more_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-plus-circle-fill" style="color: #484d4ac0; font-size: 1.5em; "></i>Add More</a> -->
                                     <a href="#"  id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #484d4ac0; font-size: 1.5em;"></i>Remove Field</a>
                                   </div>
                                     <input type="submit" name ="save" value="save">
@@ -543,6 +564,40 @@ require_once('config.php');
         
         }
        
+//         $(document).ready(function(){
+
+// // var data_fo = $('.education-input').html();
+// var data_fo = '<div class="education-input"><div class="ed-input"><div class="row"><div class="col-12"><input type="text" name="institution[]" class="wrapper" required><label>Institution</label></div></div> <div class="row"> <div class="col-12"><input type="text" name="degree[]" id="degree" required><label>Degree</label></div></div><div class="row"><div class="col-md-6"><!-- <input type="date" name="start" id="startdate" name="startdate"> --><label >Start:</label><select class="form-select" name="startyear[]" id="year"><option value="">Select Year</option></select></div><div class="col-md-6"><!-- <input type="date" class="date" name="end" id="graddate" name="graddate[]"> <input type="text" class="date-picker form-control" name="datepicker"  id="datepicker" /> --><label >End:</label><select class="form-select" name="endyear[]" id="endyear"><option value="">Select Year</option></select></div></div></div></div></div>';
+// var sd = '<a href="#"  class="remove-add-more" id="remove_fields" style="font-size: 14px; color: #484d4ac0;"><i class="bi bi-trash-fill" style="color: #bb0a1e; font-size: 1.5em;"></i>Delete</a>';
+// var data_combine = data_fo.concat(sd);
+// var max_fields = 5; //maximum input boxes allowed
+// var wrapper = $(".ed-input"); //Fields wrapper
+// var add_button = $(".add-more"); //Add button ID
+
+// var x = 1; //initlal text box count
+// $(add_button).click(function(e){ //on add input button click
+//   e.preventDefault();
+//   if(x < max_fields){ //max input box allowed
+//     x++; //text box increment
+//     $(wrapper).append(data_combine); 
+//     // document.getElementById('institution').value = ''
+//     //add input box
+//     //$(wrapper).append('<div class="remove-add-more">Remove</div>')
+//   }
+//   // console.log(data_fo);
+// });
+
+// $(wrapper).on("click",".remove-add-more", function(e){ //user click on remove text
+//     e.preventDefault();
+//     $(this).prev(wrapper).remove();
+//     //$(".add-more").prev('.user').remove(); It's remove all the buttons and inputs
+//     $(this).remove();
+//     x--;
+// });
+// });
+// function myFunction() {
+//     document.getElementById("institution").value = "";
+//   }
         </script>
        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script> 

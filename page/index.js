@@ -78,65 +78,108 @@ for (let eli of tabLinks) {
     });
   }
 
-/*==================== PROFILE PICTURE ====================*/
+
+/*==================== ADD/DELETE MORE INPUT ====================*/
+
+var add_more_fields = document.getElementById('add_more_fields');
+var add_exp = document.getElementById('add_exp');
+var add_ach = document.getElementById('add_ach');
+var add_skill = document.getElementById('add_skill');
+var add_ref = document.getElementById('add_ref');
+var remove_fields = document.getElementById('remove_fields');
+let edWrapper = document.getElementById("education-inputs");
+let exWrapper = document.getElementById("experience-input");
+let acWrapper = document.getElementById("achievement-input");
+let refWrapper = document.getElementById("reference-input");
+let skillWrapper = document.getElementById("skill-inputs");
+// let controls = document.getElementById("controls");
+//schedule.innerHTML = '<div class="ed-input"><div class="row"><div class="col-12"><input type="text" name="institution[]" class="wrapper" required><label>Institution</label></div></div> <div class="row"> <div class="col-12"><input type="text" name="degree[]" id="degree" required><label>Degree</label></div></div><div class="row"><div class="col-md-6"><!-- <input type="date" name="start" id="startdate" name="startdate"> --><label >Start:</label><select class="form-select" name="startyear[]" id="year"><option value="">Select Year</option></select></div><div class="col-md-6"><!-- <input type="date" class="date" name="end" id="graddate" name="graddate[]"> <input type="text" class="date-picker form-control" name="datepicker"  id="datepicker" /> --><label >End:</label><select class="form-select" name="endyear[]" id="endyear"><option value="">Select Year</option></select></div></div></div></div>' ;
+let html = edWrapper.innerHTML
+let exp = exWrapper.innerHTML
+let ach = acWrapper.innerHTML
+let skill = skillWrapper.innerHTML
+let ref = refWrapper.innerHTML
+
+var x = 0;
 
 
-/*==================== SERVICES MODAL ====================*/
-// var html = ''
-var x = 1;
-        var field = ' <div class="row"  id="row"><div class="col-12"><input type="text" name="institution" class="wrapper" required><label>Institution</label></div></div> <div class="row"> <div class="col-12"><input type="text" name="degree" id="degree" required><label>Degree</label></div></div><div class="row"><div class="col-md-6"><!-- <input type="date" name="start" id="startdate" name="startdate"> --><label >Start:</label><select class="form-select" name="startyear" id="year"><option value="">Select Year</option></select></div><div class="col-md-6"><!-- <input type="date" class="date" name="end" id="graddate" name="graddate"> <input type="text" class="date-picker form-control" name="datepicker"  id="datepicker" /> --><label >End:</label><select class="form-select" name="endyear" id="endyear"><option value="">Select Year</option></select></div></div></div>'
-        var add_more_fields = document.getElementById('add_more_fields');
-        var remove_fields = document.getElementById('remove_fields');
-        var educationInput = document.getElementById('education-input');
-        //   $('#add_more_fields').click(function() {
-//     var html = $('.row:first').parent().html();
-//     $(html).insertBefore(this);
-// });
+add_exp.onclick = function(){
+  var div = document.createElement("div");
+  div.innerHTML = exp 
+  
+  exWrapper.appendChild(div.firstElementChild)
+  var deleted = document.getElementById("remove_fields").innerHTML;
 
-// $(document).on("click", ".deleteButton", function() {
-//     $(this).closest('.row').remove();
-// });
-add_more_fields.onclick = function(){
-  if(x < 10){
-        educationInput.append(field);
-        x++;
-    }else{
-        alert("max ten field allowed");
-    }
-};
-educationInput.on("click" ,".remove_button" , function(){
-    $(this).parent("div").remove();
-        x--;
+}
+
+var deletedExp = document.getElementById("remove_exp");
+deletedExp.addEventListener('click',function(){  // if this function is defined outside it won't work because divElement will be out of its scope
+  exWrapper.removeChild(exWrapper.lastElementChild);
 });
-// var educationInput = document.getElementById('form');
 
-// var x=1
-// add_more_fields.onclick = function(){
 
-//   //var html = $('.row:first').parent().html();
-// 	// var newField = document.createElement('input');
-//   // var endDate = document.createElement('input');
-// 	// /*newField.setAttribute('type','date');
-// 	// newField.setAttribute('id','startdate');*/
-// 	// newField.setAttribute('class','row');
-// 	// newField.setAttribute('siz',50);
-// 	// newField.setAttribute('placeholder','Another Field');
 
-//   // /*endDate.setAttribute('type','date');
-// 	// endDate.setAttribute('id','enddate');
-// 	// endDate.setAttribute('class','col-md-6');
-// 	// endDate.setAttribute('siz',50);
-// 	// endDate.setAttribute('placeholder','Another Field');*/
-// 	// educationInput.appendChild(newField);
-//   //educationInput.appendChild(endDate);
-// }
+add_ach.onclick = function(){
+  var div = document.createElement("div");
+  div.innerHTML = ach
+  
+  acWrapper.appendChild(div.firstElementChild);
+  // var deleted = document.getElementById("remove_fields").innerHTML;
 
-// remove_fields.onclick = function(){
-// 	var input_tags = educationInput.getElementsByTagName('input');
-// 	if(input_tags.length > 2) {
-// 		educationInput.removeChild(input_tags[(input_tags.length) - 1]);
-// 	}
-// }
+}
+var deletedAch = document.getElementById("remove_achi");
+deletedAch.addEventListener('click',function(){  // if this function is defined outside it won't work because divElement will be out of its scope
+  acWrapper.removeChild(acWrapper.lastElementChild);
+});
+
+
+
+
+add_skill.onclick = function(){
+  var div = document.createElement("div");
+  div.innerHTML = skill
+  
+  skillWrapper.appendChild(div.firstElementChild);
+  var deleted = document.getElementById("remove_fields").innerHTML;
+
+}
+var deletedSkill = document.getElementById("remove_skill");
+deletedSkill.addEventListener('click',function(){  // if this function is defined outside it won't work because divElement will be out of its scope
+  skillWrapper.removeChild(skillWrapper.lastElementChild);
+});
+
+
+
+
+add_ref.onclick = function(){
+  var div = document.createElement("div");
+  div.innerHTML = ref
+  
+  refWrapper.appendChild(div.firstElementChild);
+ 
+
+}
+var deletedRef = document.getElementById("remove_ref");
+deletedRef.addEventListener('click',function(){  // if this function is defined outside it won't work because divElement will be out of its scope
+  refWrapper.removeChild(refWrapper.lastElementChild);
+});
+
+
+add_more_fields.onclick = function(){
+  x+=1
+
+  var div = document.createElement("div");
+ 
+  div.innerHTML = html 
+
+  edWrapper.appendChild(div.firstElementChild);
+
+};
+var deleted = document.getElementById("remove_ed");
+deleted.addEventListener('click',function(){  // if this function is defined outside it won't work because divElement will be out of its scope
+  edWrapper.removeChild(edWrapper.lastElementChild);
+});
+
 // /*==================== PORTFOLIO SWIPER  ====================*/
 function triggerClick(e) {
   document.querySelector('#profileImage').click();
@@ -152,15 +195,6 @@ function displayImage(e) {
 }
 
 /*==================== TESTIMONIAL ====================*/
-$('#datepicker').datetimepicker({
-  format      :   "YYYY",
-  viewMode    :   "years", 
-});
-//changeYear event trigger's
-// dp.on('changeYear', function (e) {    
-// //do something here
-// alert("Year changed ");
-// });
 
 
 /*==================== ADMIN ====================*/
@@ -277,22 +311,12 @@ function slide(wrapper, items, prev, next) {
 }
 /*==================== CHANGE BACKGROUND HEADER ====================*/ 
 
-function add_field(){
 
-  var x = document.getElementById("form");
-  // create an input field to insert
-  var new_field = document.createElement("input");
-  // set input field data type to text
-  new_field.setAttribute("type", "text");
-  // set input field name 
-  new_field.setAttribute("name", "text_field[]");
-  // select last position to insert element before it
-  var pos = x.childElementCount;
 
-  // insert element
-  x.insertBefore(new_field, x.childNodes[pos]);
-}
 /*==================== SHOW SCROLL UP ====================*/ 
+
+/*==================== MODAL POP UP ====================*/ 
+
 
 
 /*==================== DARK LIGHT THEME ====================*/ 
